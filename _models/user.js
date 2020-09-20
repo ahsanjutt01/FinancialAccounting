@@ -1,4 +1,4 @@
-const getDb = require('../utils/database');
+const getDb = require('../utils/database').getDb;
 
 class User {
     constructor(email, password, firstName, lastName) {
@@ -9,9 +9,16 @@ class User {
     }
 
     async signUp() {
-        const db = await db.collection('users').insertOne(this);
-        return true;
+
+        try {
+
+            var db = getDb();
+            const result = await db.collection('users').insertOne(this);
+            return true;
+        } catch(err) {
+            console.error(err);
+        }
     }
 }
 
-exports.User = User;
+module.exports = User;
